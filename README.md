@@ -18,3 +18,7 @@ To build, simply run make! The resulting library binaries should be in a 'build'
 
 Version 0.0.1
 January 24, 2024
+
+## License
+
+Until further notice, all commits before and after within this project is subject to the Mozilla Public License 2.0 
