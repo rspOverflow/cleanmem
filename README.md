@@ -9,8 +9,9 @@ Dependencies:
 
 1. Any version of GCC that supports stdbool.h and stdint.h
 2. stdio.h (Can be a partial implementation. printf and abort required.)
-3. make
-4. ar
+3. A host environment that implements malloc and free.
+4. make
+5. ar
 
 To build, simply run make! The resulting library binaries should be in a 'build' folder. Meanwhile, just copy the header files to anywhere in your source tree as long as they are together in the same directory. Enjoy!
 
