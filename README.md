@@ -16,7 +16,7 @@ To build, simply run make! The resulting library binaries should be in a 'build'
 
 ## Version
 
-Version 0.0.1
+Version 0.0.1\
 January 24, 2024
 
 ## License
