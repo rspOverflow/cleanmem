@@ -22,3 +22,4 @@ January 24, 2024
 ## License
 
 **Until further notice, all commits before and after within this project is subject to the Mozilla Public License 2.0**
+**By using this library, you agree to this condition.**
