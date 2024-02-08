@@ -40,6 +40,7 @@ struct heap_region_t* heap_prot_malloc(struct heap_management_instance_t* instan
     new_region->region = malloc(bytes);
 
     heap_management_add_region(instance, new_region);
+    return new_region;
   }
 
   return NULL;
