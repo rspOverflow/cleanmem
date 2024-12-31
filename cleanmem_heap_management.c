@@ -1,10 +1,16 @@
-#include "cleanmem.h"
-#include "cleanmem_structs.h"
+/*
+ * Copyright (C) 2024 NanoHeap
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
 #include <stdlib.h>
 #include <stdint.h>
 
-// REMINDER: Set the 'next_region' ptr of heap_region_t to NULL before freeing to stop a looped linked list from appearing. Just in case someone is evil.
-
+#include "cleanmem.h"
+#include "cleanmem_structs.h"
 
 
 void init_heap_management(struct heap_management_instance_t* instance) {
@@ -30,17 +36,19 @@ struct heap_region_t* heap_prot_malloc(struct heap_management_instance_t* instan
   if (instance) {
     struct heap_region_t* new_region = malloc(sizeof(struct heap_region_t));
 
-    new_region->region_accessed = false;
-    new_region->region_size = bytes;
-    new_region->region_typeid = typeid;
+    if (new_region) {
+      new_region->region_accessed = false;
+      new_region->region_size = bytes;
+      new_region->region_typeid = typeid;
 
-    new_region->prev_region = NULL;
-    new_region->next_region = NULL;
+      new_region->prev_region = NULL;
+      new_region->next_region = NULL;
     
-    new_region->region = malloc(bytes);
+      new_region->region = malloc(bytes);
 
-    heap_management_add_region(instance, new_region);
-    return new_region;
+      heap_management_add_region(instance, new_region);
+      return new_region;
+    }
   }
 
   return NULL;
