@@ -6,6 +6,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+#include <stdlib.h>
+
 #include "cleanmem.h"
 #include "cleanmem_structs.h"
 
@@ -20,26 +22,30 @@ void* region_prot_heap_access(struct heap_region_t* heap) {
 }
 
 unsigned int region_query_heap_typeid(struct heap_region_t* heap) {
-  if (heap) {
-    return heap->region_typeid;
-  }
-  
-  return 0;
+  return heap ? heap->region_typeid : 0;
 }
 
-void region_manually_free_region(struct heap_region_t* heap) {
-  if (heap) {
-    if (heap->next_region) {
-      heap->next_region->prev_region = heap->prev_region;
-    }
+void region_manually_free_region(struct heap_management_instance_t* instance, struct heap_region_t* heap) {
+  if (!heap || !instance) return;
 
-    if (heap->prev_region) {
-      heap->prev_region->next_region = heap->next_region;
-    }
+  // Update head pointer if freeing the first node
+  if (instance->heap_regions == heap) {
+    instance->heap_regions = heap->next_region;
+  }
 
-    free(heap->region);
-    heap->next_region = NULL;
-    heap->prev_region = NULL;
-    free(heap);
+  // Unlink from neighbors
+  if (heap->next_region) {
+    heap->next_region->prev_region = heap->prev_region;
+  }
+
+  if (heap->prev_region) {
+    heap->prev_region->next_region = heap->next_region;
+  }
+
+  free(heap->region);
+  free(heap);
+
+  if (instance->total_region_count > 0) {
+    instance->total_region_count--;
   }
 }
